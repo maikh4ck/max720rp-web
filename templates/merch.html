@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Tienda oficial — MAX720RP{% endblock %}
+{% block content %}
+<section class="page-hero"><p class="eyebrow">TIENDA OFICIAL</p><h1>VÍSTELO.<br><em>REPRESÉNTALO.</em></h1><p>Merch MAX720RP. Cada pedido queda registrado en tu cuenta.</p></section>
+<section class="section shop-layout">
+  <div class="product-grid">
+    {% for product in products %}
+    <article class="product-card">
+      <div class="product-image product-placeholder">
+        {% if product.image_url.startswith('uploads/') %}<img class="shop-product-image" src="{{ url_for('product_upload', filename=product.image_url[8:]) }}" alt="{{ product.name }}">
+        {% elif product.image_url %}<img class="shop-product-image" src="{{ product.image_url }}" alt="{{ product.name }}">
+        {% else %}<img class="shop-product-logo" src="{{ url_for('static', filename='max720rp-logo.png') }}" alt="MAX720RP">{% endif %}
+        <small>QUEDAN {{ product.stock }}</small>
+      </div>
+      <div class="product-info"><div><h3>{{ product.name }}</h3><p>{{ product.description }}</p></div><strong>{{ '%.2f'|format(product.price_cents / 100) }} €</strong></div>
+      <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button button-outline button-wide" type="submit">Añadir al carrito <span>＋</span></button></form>
+    </article>
+    {% else %}<p class="empty-state">No hay productos disponibles ahora mismo.</p>{% endfor %}
+  </div>
+  <aside class="cart-panel"><p class="eyebrow">TU PEDIDO</p><h2>Carrito</h2>
+    {% if cart_lines %}<div class="cart-lines">{% for product, quantity in cart_lines %}<div class="cart-line"><span>{{ product.name }} × {{ quantity }}</span><strong>{{ '%.2f'|format(product.price_cents * quantity / 100) }} €</strong></div>{% endfor %}</div>
+    <div class="cart-total"><span>Total</span><strong>{{ '%.2f'|format(cart_total / 100) }} €</strong></div><p class="muted">El pago y el envío se coordinan tras recibir el pedido.</p>
+    <form action="{{ url_for('clear_cart') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="text-link" type="submit">Vaciar carrito</button></form>
+    <form action="{{ url_for('place_order') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button button-red button-wide" type="submit">{% if g.user %}Confirmar pedido{% else %}Inicia sesión para pedir{% endif %} <span>→</span></button></form>
+    {% else %}<p class="muted">Tu carrito está vacío. Añade una prenda para empezar.</p>{% endif %}
+  </aside>
+</section>
+{% endblock %}

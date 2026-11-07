@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+max720rp.db
+max720rp.db-shm
+max720rp.db-wal
+max720rp.db-journal
+static/uploads/

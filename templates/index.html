@@ -1,0 +1,83 @@
+{% extends 'base.html' %}{% block title %}MAX720RP — Música urbana con identidad{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <p class="eyebrow"><span class="live-dot"></span> ARTISTA · RAP · URBANO</p>
+        <h1>SONIDO<br><em>SIN LÍMITES.</em></h1>
+        <p class="hero-copy">Soy MAX720RP. Música nacida de lo que vivo, hecha para quien nunca deja de avanzar. Mi
+            objetivo: convertir cada historia en un sonido que conecte y que acerque a cristo.</p>
+        <div class="hero-actions"><a class="button button-red" href="{{ url_for('music') }}">Escucha mi música
+                <span>↗</span></a><a class="button button-outline" href="{{ url_for('contact') }}">Booking /
+                contacto</a></div>
+        <div class="hero-meta"><span>INDEPENDIENTE · AUTÉNTICO · 720°</span><a href="https://www.youtube.com/@max720rp"
+                target="_blank" rel="noopener">YOUTUBE OFICIAL ↗</a></div>
+    </div>
+    <div class="hero-number">720<span>°</span></div>
+    <div class="hero-side">MAX720RP — DESDE AQUÍ, HACIA TODO</div>
+</section>
+<section class="section section-music">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">CATÁLOGO</p>
+            <h2>TOP <em>LANZAMIENTOS</em></h2>
+        </div><a class="text-link" href="https://www.youtube.com/@max720rp" target="_blank" rel="noopener noreferrer">Ver toda la música <span>↗</span></a>
+    </div>
+    <div class="song-grid">{% for song in songs[:3] %}<article class="song-card"><a class="song-video-link"
+                href="{{ song.youtube_url }}" target="_blank" rel="noopener"
+                aria-label="Ver {{ song.title }} en YouTube">
+                <div class="cover-art"><img class="cover-thumbnail"
+                        src="{{ song.cover_url or url_for('static', filename='max720rp-logo.png') }}"
+                        alt="Miniatura de {{ song.title }}"><span class="cover-index">TOP {{ song.view_rank if
+                        song.view_rank < 1000 else loop.index }}</span><span class="cover-title">{{ song.title
+                                }}</span><span class="thumbnail-play" aria-hidden="true">▶</span></div>
+            </a>
+            <div class="song-info">
+                <div>
+                    <h3>{{ song.title }}</h3>
+                    <p>{{ song.description }}</p>
+                </div><a class="play-button" href="{{ song.youtube_url }}" target="_blank" rel="noopener"
+                    aria-label="Escuchar {{ song.title }}">▶</a>
+            </div>
+        </article>{% else %}<p class="empty-state">Pronto habrá música nueva por aquí.</p>{% endfor %}</div>
+</section>
+<section class="manifesto">
+    <div class="manifesto-mark">720°</div>
+    <div>
+        <p class="eyebrow">MI VISIÓN</p>
+        <h2>UNA VOZ PROPIA.<br><em>UN CAMINO PROPIO.</em></h2>
+        <p>No hago música para encajar. Cada tema es parte de un recorrido: trabajo, testimonios, sueños y la energía de
+            seguir haciendo el llamado. CRISTO es el punto de encuentro.</p>
+    </div>
+</section>
+<section class="section merch-preview">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">LLEVA LA IDENTIDAD</p>
+            <h2>MERCH <em>OFICIAL</em></h2>
+        </div><a class="text-link" href="{{ url_for('merch') }}">Ver tienda <span>→</span></a>
+    </div>
+    <div class="product-grid">{% for product in products %}<article class="product-card">
+            <div class="product-image product-placeholder">{% if product.image_url.startswith('uploads/') %}<img
+                    class="shop-product-image" src="{{ url_for('product_upload', filename=product.image_url[8:]) }}"
+                    alt="{{ product.name }}">{% elif product.image_url %}<img class="shop-product-image"
+                    src="{{ product.image_url }}" alt="{{ product.name }}">{% else
+                %}<span>MAX<span>720RP</span></span>{% endif %}</div>
+            <div class="product-info">
+                <div>
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                </div><strong>{{ '%.2f'|format(product.price_cents / 100) }} €</strong>
+            </div>
+            <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="post"><input type="hidden"
+                    name="csrf_token" value="{{ csrf_token }}"><button class="button button-outline button-wide"
+                    type="submit">Añadir al carrito <span>＋</span></button></form>
+        </article>{% else %}<p class="empty-state">Nuevas prendas, muy pronto.</p>{% endfor %}</div>
+</section>
+<section class="booking-band">
+    <div>
+        <p class="eyebrow">¿ORGANIZAS UN EVENTO?</p>
+        <h2>HABLEMOS DE<br><em>PRÓXIMO SHOW.</em></h2>
+    </div><a class="button button-red" href="{{ url_for('contact') }}">Contactar para booking <span>↗</span></a>
+</section>
+{% endblock %}
