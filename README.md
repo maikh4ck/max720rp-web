@@ -1,5 +1,7 @@
 # MAX720RP — web de artista
 
+Para la versión PHP/MariaDB que funciona con XAMPP, consulta [xampp/LEEME.md](xampp/LEEME.md). La carpeta `xampp` está preparada para usarse sin Python; la versión Flask original se conserva como respaldo.
+
 Aplicación web en Flask con SQLite. Incluye página de presentación, catálogo musical enlazado a YouTube, tienda con carrito y registro de pedidos, formulario de booking y cuentas con roles `user` / `admin`.
 
 ## Arranque local en Windows
@@ -56,3 +58,4 @@ Tras la publicación, Render mantiene el proceso arrancado y gestiona los reinic
 ## Datos
 
 `users` guarda cuentas y roles; `songs` y `products` mantienen el catálogo; las imágenes locales de producto se guardan en `static/uploads`; el banner de página está en `static/max720rp-banner.png`; `orders` y `order_items` conservan el precio y el nombre de cada artículo al confirmar; `inquiries` almacena solicitudes de contacto; `password_resets` guarda hashes de tokens temporales; `app_settings` evita volver a crear los datos de demostración después de borrarlos. La eliminación de una cuenta con pedidos la anonimiza para conservar el historial. Se usan contraseñas hash, formularios POST con token CSRF y transacción para validar/descontar stock.
+

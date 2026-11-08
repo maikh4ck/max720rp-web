@@ -1,0 +1,9 @@
+Options -Indexes
+<FilesMatch "^(config\.php|config\.local\.php|schema\.sql|migrate\.php|create_admin\.php|verify_scrypt\.php)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+

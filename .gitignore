@@ -9,3 +9,8 @@ max720rp.db-shm
 max720rp.db-wal
 max720rp.db-journal
 static/uploads/
+xampp/uploads/*
+!xampp/uploads/.htaccess
+/xampp/config.local.php
+/xampp-mysql-data-backup-20261108/
+
